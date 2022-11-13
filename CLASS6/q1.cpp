@@ -8,87 +8,59 @@ iii. A list containing the same value through out
 iv. Random List
 v. 50% of the List sorted
 */
+
 #include<bits/stdc++.h>
 using namespace std;
-using namespace std::chrono;
-void swap(int *a,int *b){
-    int temp = *a;
-    *a = *b;
-    *b = temp;
-}
-int partition(int arr[],int l,int r){
-    int pivot = arr[r];
-    int i = l-1;
-    for(int j=l;j<r;j++){
-        if(arr[j]<pivot){
+int partition(int a[],int low,int high)
+{
+    int pivot=a[low];
+    int i=low+1;
+    int j=high;
+    while(i<=j)
+    {
+        while(a[i]<=pivot)
+        {
             i++;
-            swap(&arr[i],&arr[j]);
+        }
+        while(a[j]>pivot)
+        {
+            j--;
+        }
+        if(i<j)
+        {
+            swap(a[i],a[j]);
         }
     }
-    swap(&arr[i+1],&arr[r]);
-    return i+1;
+    swap(a[low],a[j]);
+    return j;
 }
-void quickSort(int arr[],int l,int r){
-    if(l<r){
-        int pi = partition(arr,l,r);
-        quickSort(arr,l,pi-1);
-        quickSort(arr,pi+1,r);
+
+void quicksort(int a[],int low,int high)
+{
+    if(low<high)
+    {
+        int p=partition(a,low,high);
+        quicksort(a,low,p-1);
+        quicksort(a,p+1,high);
     }
 }
-void printArray(int arr[],int n){
-    for(int i=0;i<n;i++){
-        cout<<arr[i]<<" ";
-    }
-    cout<<endl;
-}
-int main(){
-    clock_t start, end;
+
+int main()
+{
     int n;
-    int expression;
-    cout<<"Enter \n 1.Order List\n 2.Reverse order List\n 3.A list containing the same value through out\n 4.Random List\n 5.50% of the List sorted\n";
-    cin>>expression;
-
-   switch (expression)
-   {
-   case 1:
-       cout<<"Enter the size of array: ";
-       cin>>n;
-       int arr[n];
-       for(int i=0;i<n;i++){
-           arr[i]=i;
-       }
-       cout<<"Array is: ";
-       printArray(arr,n);
-       start = clock();
-       quickSort(arr,0,n-1);
-       end = clock();
-       cout<<"Sorted array is: ";
-       printArray(arr,n);
-       cout<<"Time taken by quick sort is: "<<(double)(end-start)/CLOCKS_PER_SEC<<" seconds"<<endl;
-       break;
-    break;
-   
-   default:
-    break;
-   }
-
-
-
-
-
-    cout<<"Enter the size of array: ";
+    cout<<"Enter the number of elements in the array: ";
     cin>>n;
-    int arr[n];
-    for(int i=0;i<n;i++){
-        arr[i]=rand()%n;
+    int a[n];
+    cout<<"Enter the elements of the array: ";
+    for(int i=0;i<n;i++)
+    {
+        cin>>a[i];
     }
-    cout<<"Array is: ";
-    printArray(arr,n);
-    start = clock();
-    quickSort(arr,0,n-1);
-    end = clock();
-    cout<<"Sorted array is: ";
-    printArray(arr,n);
-    cout<<"Time taken by quick sort is: "<<(double)(end-start)/CLOCKS_PER_SEC<<" seconds"<<endl;
+    quicksort(a,0,n-1);
+    cout<<"The sorted array is: ";
+    for(int i=0;i<n;i++)
+    {
+        cout<<a[i]<<" ";
+    }
     return 0;
 }
